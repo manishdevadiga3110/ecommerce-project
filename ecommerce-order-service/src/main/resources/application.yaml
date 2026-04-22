@@ -1,0 +1,39 @@
+spring:
+  application:
+    name: orderservice
+
+    #db configuration for oracle database
+  datasource:
+    url: jdbc:oracle:thin:@localhost:1521/XEPDB1
+    username: system
+    password: Manish2158@oracle
+    driver-class-name: oracle.jdbc.OracleDriver
+
+  jpa:
+    database-platform: org.hibernate.dialect.OracleDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+#Prometheus configuration for monitoring
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    tags:
+      application: user-service
+
+#kafka configuration for order service
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: order-group
+      auto-offset-reset: earliest
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
